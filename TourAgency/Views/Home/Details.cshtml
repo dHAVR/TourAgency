@@ -5,10 +5,8 @@
 }
 
 <div class="tour-hero">
-    <!-- Используем изображение из базы данных -->
     <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="@Model.Name" class="hero-image">
     <div class="hero-overlay">
-        <!-- Название тура -->
         <h1>@Model.Name</h1>
         <p>@Model.Description</p>
         <span class="price">@Model.Price$</span>
@@ -18,8 +16,8 @@
 </div>
 
 <div class="tour-details">
-    <p><strong>Описание:</strong> @Model.Description</p>
-    <p><strong>Доступные места:</strong> @Model.AvailableSlots</p>
+    <p><strong>Description:</strong> @Model.Description</p>
+    <p><strong>Available places:</strong> @Model.AvailableSlots</p>
 </div>
 
-<a href="/Home/Index" class="btn btn-primary">Назад к турам</a>
+<a href="/Home/Index" class="btn btn-primary">Back to tours</a>
