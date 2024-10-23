@@ -3,14 +3,14 @@
 @{
     ViewData["Title"] = "Details";
 }
-
+<link href="/css/details.css" rel="stylesheet" />
 <div class="tour-hero">
     <img src="data:image;base64,@Convert.ToBase64String(Model.Image)" alt="@Model.Name" class="hero-image">
     <div class="hero-overlay">
         <h1>@Model.Name</h1>
         <p>@Model.Description</p>
         <span class="price">@Model.Price$</span>
-        <button class="join-button">Присоединиться</button>
+        <button class="join-button">Join</button>
         <span class="tour-dates">@Model.StartDate.ToShortDateString() – @Model.EndDate.ToShortDateString()</span>
     </div>
 </div>

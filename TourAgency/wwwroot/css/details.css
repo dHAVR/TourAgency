@@ -1,57 +1,64 @@
 ﻿/* Hero section */
 .tour-hero {
     position: relative;
-    text-align: center;
+    text-align: left; 
     color: white;
+    height: 400px; 
 }
 
 .hero-image {
     width: 100%;
-    height: 600px;
+    height: 100%;
     object-fit: cover;
+    object-position: center;
 }
 
 .hero-overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
+    top: 30%;
+    left: 5%;
     color: white;
-    background: rgba(0, 0, 0, 0.5);
-    padding: 20px;
+    background: none;
 }
 
-    .hero-overlay h1 {
-        font-size: 3em;
-        margin-bottom: 10px;
-    }
+.tour-info h1 {
+    font-size: 3.5em; 
+    font-weight: bold; 
+    margin-bottom: 10px;
+}
 
-    .hero-overlay p {
-        font-size: 1.5em;
-    }
+.tour-info .description {
+    font-size: 1.5em; 
+    font-weight: bold; 
+}
 
-.price {
-    font-size: 2em;
-    font-weight: bold;
+.tour-info .price {
+    font-size: 2.5em; 
+    font-weight: bold; 
+    margin-top: 10px;
+}
+
+.tour-info .dates {
+    font-size: 1.3em; 
+    font-weight: bold; 
+    margin-bottom: 20px;
 }
 
 .join-button {
-    background-color: #ff4500;
+    background: transparent;
+    border: 2px solid white;
     color: white;
-    padding: 10px 20px;
-    border: none;
+    padding: 12px 25px; 
     cursor: pointer;
-    font-size: 1.2em;
-    margin-top: 20px;
+    font-size: 1.5em; 
+    font-weight: bold; 
+    transition: background 0.3s, color 0.3s;
 }
 
-.tour-dates {
-    display: block;
-    margin-top: 20px;
-    font-size: 1.2em;
-}
-
+    .join-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
 
 .tour-details {
     padding: 20px;
