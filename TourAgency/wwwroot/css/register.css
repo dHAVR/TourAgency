@@ -1,0 +1,41 @@
+﻿/* register.css */
+body {
+    background-color: #f8f9fa;
+}
+
+h1 {
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.card {
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+
+.form-floating {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    border-radius: 8px;
+}
+
+.text-center {
+    margin-top: 20px;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}

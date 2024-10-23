@@ -1,0 +1,25 @@
+﻿@model IEnumerable<TourAgency.Models.Tour>
+
+<link href="/css/tours.css" rel="stylesheet" />
+
+<div class="container tour-cards">
+    <h2>Available Tours</h2>
+    <div class="row">
+        @foreach (var tour in Model)
+        {
+            <div class="col-md-4">
+                <a href="@Url.Action("Details", "Home", new { id = tour.Id })" class="card-link">
+                    <div class="card">
+                        <img src="data:image;base64,@Convert.ToBase64String(tour.Image)" class="card-img-top" alt="@tour.Name">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Visit @tour.Name <i class="fas fa-arrow-right"></i>
+                            </h5>
+                            <p class="card-text">@tour.Description</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@model List<TourAgency.Models.ApplicationUser>
+
+<h2>Список користувачів</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Ім'я</th>
+            <th>Прізвище</th>
+            <th>Email</th>
+            <th>Дата народження</th>
+            <th>Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Name</td>
+                <td>@user.Surname</td>
+                <td>@user.Email</td>
+                <td>@user.DateOfBirth.ToShortDateString()</td>
+                <td>
+                    <a href="/User/Edit/@user.Id" class="btn btn-primary btn-sm">Редагувати</a>
+                    <form asp-action="Delete" method="post" class="d-inline">
+                        <input type="hidden" name="id" value="@user.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/User/Create" class="btn btn-success">Додати користувача</a>

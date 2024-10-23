@@ -1,0 +1,41 @@
+﻿
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
+<div class="container">
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#users">Користувачі</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#tours">Тури</a>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-4">
+  
+        <div id="users" class="tab-pane fade show active">
+            <h2>Користувачі</h2>
+            <div class="d-grid gap-2">
+                <a href="/User/Index" class="btn btn-primary">Переглянути всіх користувачів</a>
+                <a href="/User/Create" class="btn btn-success">Додати нового користувача</a>
+            </div>
+        </div>
+
+
+        <div id="tours" class="tab-pane fade">
+            <h2>Тури</h2>
+            <div class="d-grid gap-2">
+                <a href="/Tours/Index" class="btn btn-primary">Переглянути всі тури</a>
+                <a href="/Tours/Create" class="btn btn-success">Додати новий тур</a>
+            </div>
+        </div>
+    </div>
+</div>

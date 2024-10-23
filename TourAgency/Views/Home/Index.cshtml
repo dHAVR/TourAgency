@@ -1,0 +1,35 @@
+﻿@model IEnumerable<TourAgency.Models.Tour>
+
+@{
+    ViewData["Title"] = "Discover World";
+}
+
+<link href="/css/index.css" rel="stylesheet">
+
+<div class="hero-image">
+    <div class="overlay">
+        <div class="hero-text">
+            <h1>Discover World</h1>
+            <p>Private tours to exotic places</p>
+            <a href="/Home/Tours" class="btn btn-custom btn-lg">Look for more tours</a>
+        </div>
+    </div>
+</div>
+
+<div class="container tour-cards">
+    <h2>Available Tours</h2>
+    <div class="row">
+        @foreach (var tour in Model)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="data:image;base64,@Convert.ToBase64String(tour.Image)" class="card-img-top" alt="@tour.Name">
+                    <div class="card-body">
+                        <h5 class="card-title">Visit @tour.Name <i class="fas fa-arrow-right"></i></h5>
+                        <p class="card-text">@tour.Description</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
