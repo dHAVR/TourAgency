@@ -39,23 +39,25 @@ namespace TourAgency.Controllers
             return View(tour);
         }
 
-        public IActionResult Tours(string searchQuery, string countryFilter, decimal? minPrice, decimal? maxPrice)
+        public IActionResult Tours(string searchQuery, string countryFilter, decimal? minPrice, decimal? maxPrice, bool onlyAvailable = false)
         {
             var tours = _context.Tours.AsQueryable();
 
-          
+            if (onlyAvailable)
+            {
+                tours = tours.Where(t => t.AvailableSlots > 0);
+            }
+
             if (!string.IsNullOrEmpty(searchQuery))
             {
                 tours = tours.Where(t => t.Name.Contains(searchQuery) || t.Description.Contains(searchQuery));
             }
 
-       
             if (minPrice.HasValue)
             {
                 tours = tours.Where(t => t.Price >= minPrice);
             }
 
-     
             if (maxPrice.HasValue)
             {
                 tours = tours.Where(t => t.Price <= maxPrice);
@@ -63,6 +65,7 @@ namespace TourAgency.Controllers
 
             return View(tours.ToList());
         }
+
 
         public IActionResult About()
         {
