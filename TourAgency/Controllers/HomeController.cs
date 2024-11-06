@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TourAgency.Data;
 using TourAgency.Models;
+using System.Linq;
 
 namespace TourAgency.Controllers
 {
@@ -38,11 +39,29 @@ namespace TourAgency.Controllers
             return View(tour);
         }
 
-
-        public IActionResult Tours()
+        public IActionResult Tours(string searchQuery, string countryFilter, decimal? minPrice, decimal? maxPrice)
         {
-            var tours = _context.Tours.ToList();
-            return View(tours);
+            var tours = _context.Tours.AsQueryable();
+
+          
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                tours = tours.Where(t => t.Name.Contains(searchQuery) || t.Description.Contains(searchQuery));
+            }
+
+       
+            if (minPrice.HasValue)
+            {
+                tours = tours.Where(t => t.Price >= minPrice);
+            }
+
+     
+            if (maxPrice.HasValue)
+            {
+                tours = tours.Where(t => t.Price <= maxPrice);
+            }
+
+            return View(tours.ToList());
         }
 
         public IActionResult About()
