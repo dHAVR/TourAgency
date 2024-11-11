@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TourAgency.Data;
 
@@ -11,9 +12,11 @@ using TourAgency.Data;
 namespace TourAgency.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241111214651_AddIsVerifiedToReview")]
+    partial class AddIsVerifiedToReview
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -423,7 +426,7 @@ namespace TourAgency.Data.Migrations
             modelBuilder.Entity("TourAgency.Models.Review", b =>
                 {
                     b.HasOne("TourAgency.Models.Tour", "Tour")
-                        .WithMany("Reviews")
+                        .WithMany()
                         .HasForeignKey("TourId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -437,11 +440,6 @@ namespace TourAgency.Data.Migrations
                     b.Navigation("Tour");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TourAgency.Models.Tour", b =>
-                {
-                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

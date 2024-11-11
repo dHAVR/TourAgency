@@ -33,10 +33,24 @@ else
                     <td>@booking.NumberOfSpots</td>
                     <td>@(booking.IsConfirmed ? "Yes" : "No")</td>
                     <td>
-                        <form method="post" asp-page-handler="Cancel">
-                            <input type="hidden" name="bookingId" value="@booking.Id" />
-                            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
-                        </form>
+                        @if (booking.IsConfirmed)
+                        {
+                            <form method="post" asp-page-handler="LeaveReview">
+                                <input type="hidden" name="ReviewInput.BookingId" value="@booking.Id" />
+                                <div class="form-group">
+                                    <label for="review-comment-@booking.Id">Leave a review</label>
+                                    <textarea id="review-comment-@booking.Id" name="ReviewInput.Comment" class="form-control" rows="3"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-sm mt-2">Submit Review</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <form method="post" asp-page-handler="Cancel">
+                                <input type="hidden" name="bookingId" value="@booking.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+                            </form>
+                        }
                     </td>
                 </tr>
             }

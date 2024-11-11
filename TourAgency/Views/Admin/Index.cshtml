@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TourAgency.Models.Booking>
+﻿@model TourAgency.ViewModels.AdminDashboardViewModel
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -14,6 +14,9 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#bookings" role="tab">Бронювання</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#reviews" role="tab">Відгуки</a>
         </li>
     </ul>
 
@@ -55,7 +58,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var booking in Model)
+                    @foreach (var booking in Model.Bookings)
                     {
                         <tr id="booking-row-@booking.Id">
                             <td>@booking.Tour.Name</td>
@@ -77,21 +80,53 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Reviews Section -->
+        <div id="reviews" class="tab-pane fade" role="tabpanel">
+            <h2>Відгуки</h2>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tour</th>
+                        <th>Comment</th>
+                        <th>Verified</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var review in Model.Reviews)
+                    {
+                        <tr id="review-row-@review.Id">
+                            <td>@review.Tour.Name</td>
+                            <td>@review.Comment</td>
+                            <td id="verify-status-@review.Id">@((review.IsVerified) ? "Yes" : "No")</td>
+                            <td>
+                                @if (!review.IsVerified)
+                                {
+                                    <button class="btn btn-warning btn-sm verify-review-btn" data-id="@review.Id">Підтвердити відгук</button>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-success">Підтверджено</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 
-  
     <div class="mt-4 text-right">
-        <div class="mt-4 text-right">
-            <form asp-area="Identity" asp-page="/Account/Logout" method="post">
-                <button type="submit" class="btn btn-danger">Log Out</button>
-            </form>
-        </div>
-
+        <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+            <button type="submit" class="btn btn-danger">Log Out</button>
+        </form>
     </div>
 </div>
 
 <script>
     $(document).ready(function() {
+        // Confirm booking button
         $('.confirm-booking-btn').click(function() {
             var bookingId = $(this).data('id');
 
@@ -110,6 +145,29 @@
                 },
                 error: function() {
                     alert('Error confirming booking.');
+                }
+            });
+        });
+
+        // Verify review button
+        $('.verify-review-btn').click(function() {
+            var reviewId = $(this).data('id');
+
+            $.ajax({
+                url: '/Reviews/ConfirmReview',
+                type: 'POST',
+                data: { id: reviewId },
+                success: function(response) {
+                    if (response.success) {
+                        $('#verify-status-' + reviewId).text('Yes');
+                        $('#review-row-' + reviewId + ' .verify-review-btn')
+                            .replaceWith('<span class="badge badge-success">Підтверджено</span>');
+                    } else {
+                        alert('Failed to verify review: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Error verifying review.');
                 }
             });
         });

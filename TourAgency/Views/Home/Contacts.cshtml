@@ -2,43 +2,45 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
+@inject IViewLocalizer Localizer
+
 @{
-    ViewBag.Title = "Contact Us";
+    ViewBag.Title = Localizer["ContactUsTitle"];
 }
 
-<h2>Contact Us</h2>
+<h2>@Localizer["ContactUsTitle"]</h2>
 
 <div class="contact-section">
-    <p>We are here to help you plan your next adventure. Reach out to us through any of the following ways:</p>
+    <p>@Localizer["HelpPlanAdventure"]</p>
 
     <div class="contact-info">
-        <h3>Contact Information</h3>
-        <p><strong>Phone:</strong> +1 (234) 567-890</p>
-        <p><strong>Email:</strong> contact@touragency.com</p>
-        <p><strong>Address:</strong> 123 Travel Street, Adventure City, Country</p>
+        <h3>@Localizer["ContactInformation"]</h3>
+        <p><strong>@Localizer["Phone"]:</strong> +1 (234) 567-890</p>
+        <p><strong>@Localizer["Email"]:</strong> contact@touragency.com</p>
+        <p><strong>@Localizer["Address"]:</strong> 123 Travel Street, Adventure City, Country</p>
     </div>
 
-    <h3>Office Hours</h3>
+    <h3>@Localizer["OfficeHours"]</h3>
     <ul>
-        <li>Monday to Friday: 9:00 AM - 6:00 PM</li>
-        <li>Saturday: 10:00 AM - 4:00 PM</li>
-        <li>Sunday: Closed</li>
+        <li>@Localizer["MondayToFridayHours"]</li>
+        <li>@Localizer["SaturdayHours"]</li>
+        <li>@Localizer["SundayClosed"]</li>
     </ul>
 
-    <h3>Contact Form</h3>
+    <h3>@Localizer["ContactFormTitle"]</h3>
     <form method="post" action="/Contact/Submit">
         <div class="form-group">
-            <label for="name">Name:</label>
+            <label for="name">@Localizer["NameLabel"]:</label>
             <input type="text" id="name" name="name" class="form-control" required />
         </div>
         <div class="form-group">
-            <label for="email">Email:</label>
+            <label for="email">@Localizer["EmailLabel"]:</label>
             <input type="email" id="email" name="email" class="form-control" required />
         </div>
         <div class="form-group">
-            <label for="message">Message:</label>
+            <label for="message">@Localizer["MessageLabel"]:</label>
             <textarea id="message" name="message" class="form-control" rows="5" required></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Send Message</button>
+        <button type="submit" class="btn btn-primary">@Localizer["SendMessageButton"]</button>
     </form>
 </div>

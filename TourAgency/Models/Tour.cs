@@ -15,6 +15,8 @@
 
         public DateTime EndDate { get; set; }  
 
-        public int AvailableSlots { get; set; }  
+        public int AvailableSlots { get; set; }
+
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 }

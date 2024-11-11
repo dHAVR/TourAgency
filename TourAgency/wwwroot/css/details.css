@@ -20,6 +20,10 @@
     color: white;
     background: none;
 }
+.padding-left {
+    padding-left: 30px;
+}
+
 
 .tour-info h1 {
     font-size: 3.5em; 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using TourAgency.Data;
 using TourAgency.Models;
@@ -24,6 +25,15 @@ namespace TourAgency.Areas.Identity.Pages.Account.Manage
         }
 
         public List<Booking> Bookings { get; set; }
+
+        [BindProperty]
+        public ReviewInputModel ReviewInput { get; set; }
+
+        public class ReviewInputModel
+        {
+            public int BookingId { get; set; }
+            public string Comment { get; set; }
+        }
 
         public async Task OnGetAsync()
         {
@@ -52,5 +62,25 @@ namespace TourAgency.Areas.Identity.Pages.Account.Manage
 
             return RedirectToPage();
         }
-    }
+
+        public async Task<IActionResult> OnPostLeaveReviewAsync()
+        {
+            var booking = await _context.Bookings.FindAsync(ReviewInput.BookingId);
+            if (booking != null && booking.IsConfirmed)
+            {
+                var review = new Review
+                {
+                    UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    TourId = booking.TourId,
+                    Comment = ReviewInput.Comment,
+                    CreatedAt = DateTime.Now,
+                    IsVerified = false 
+                };
+                _context.Reviews.Add(review);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToPage();
+        }
+ 
+}
 }

@@ -20,6 +20,23 @@ body {
     padding: 20px;
 }
 
+.language-selector {
+    width: 150px;
+    border-radius: 30px;
+    padding: 8px 12px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    color: #333;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+    .language-selector:hover {
+        background-color: #e2e6ea;
+        color: #007bff;
+    }
+
 .logo-section {
     display: flex;
     align-items: center;

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TourAgency.Data;
 using TourAgency.Models;
+using TourAgency.ViewModels;
 
 namespace TourAgency.Controllers
 {
@@ -19,9 +18,16 @@ namespace TourAgency.Controllers
         public async Task<IActionResult> Index()
         {
             var bookings = await _dbContext.Bookings.Include(b => b.Tour).ToListAsync();
-            return View(bookings);
-        }
+            var reviews = await _dbContext.Reviews.Include(r => r.Tour).Include(r => r.User).ToListAsync();
 
+            var viewModel = new AdminDashboardViewModel
+            {
+                Bookings = bookings,
+                Reviews = reviews
+            };
+
+            return View(viewModel);
+        }
 
         [HttpPost]
         public async Task<IActionResult> AddTour(Tour tour, IFormFile imageFile)
@@ -33,7 +39,7 @@ namespace TourAgency.Controllers
                     using (var memoryStream = new MemoryStream())
                     {
                         await imageFile.CopyToAsync(memoryStream);
-                        tour.Image = memoryStream.ToArray();  
+                        tour.Image = memoryStream.ToArray();
                     }
                 }
 

@@ -1,33 +1,46 @@
 ﻿
-
 <!DOCTYPE html>
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<TourAgency.Models.ApplicationUser> SignInManager
 @inject UserManager<TourAgency.Models.ApplicationUser> UserManager
+@inject IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Localization
+@using System.Globalization
+
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewData["Title"] - Туристична агенція</title>
+    <title>@ViewData["Title"] - @Localizer["TourAgency"]</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link href="/css/site.css" rel="stylesheet" />
-
 </head>
 <body>
-<header class="header">
+    <header class="header">
         <div class="logo-section nav-links">
             <img src="~/images/travel_icon.png" alt="Logo" class="logo">
-             <a href="/Home/Index"> <h1>Time to travel!</h1></a>
+            <a href="/Home/Index"><h1>@Localizer["TimeToTravel"]</h1></a>
         </div>
-
-         <div class = "links">
+        <div class="links">
             <nav class="nav-links">
-                <a href="/Home/Tours">Tours</a>
-                <a href="/Home/About">About us</a>
-                <a href="/Home/Contacts">Contacts</a>
+                <a href="/Home/Tours">@Localizer["Tours"]</a>
+                <a href="/Home/About">@Localizer["AboutUs"]</a>
+                <a href="/Home/Contacts">@Localizer["Contacts"]</a>
             </nav>
         </div>
+
+
+
+       <form id="selectLanguage" asp-controller="Home" asp-action="SetLanguage" method="post">
+            <select name="culture" class="language-selector" onchange="this.form.submit();">
+            <!option value="en" @(CultureInfo.CurrentCulture.Name == "en" ? "selected" : "")>English</!option>
+            <!option value="uk" @(CultureInfo.CurrentCulture.Name == "uk" ? "selected" : "")>Українська</!option>
+        </select>
+        <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+      </form>
+
+
 
         <div class="account-icon">
             @if (SignInManager.IsSignedIn(User))
@@ -36,32 +49,30 @@
                 if (await UserManager.IsInRoleAsync(user, "Admin"))
                 {
                     <a href="/Admin/Index">
-                        <img class="profile-logo" src="~/images/profile.png" alt="Admin Dashboard">
+                        <img class="profile-logo" src="~/images/profile.png" alt="@Localizer["AdminDashboard"]">
                     </a>
                 }
                 else
                 {
                     <a href="/Identity/Account/Manage">
-                        <img class="profile-logo" src="~/images/profile.png" alt="Profile">
+                        <img class="profile-logo" src="~/images/profile.png" alt="@Localizer["Profile"]">
                     </a>
                 }
-             
             }
             else
             {
-                    <a href="/Identity/Account/Login">
-                        <img class="profile-logo" src="~/images/profile.png" alt="profile">
-                    </a>              
+                <a href="/Identity/Account/Login">
+                    <img class="profile-logo" src="~/images/profile.png" alt="@Localizer["Profile"]">
+                </a>
             }
         </div>
     </header>
-
     <main role="main" class="container-fluid p-0 main">
         @RenderBody()
     </main>
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Туристична агенція</p>
+            <p>&copy; 2024 @Localizer["TourAgency"]</p>
         </div>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

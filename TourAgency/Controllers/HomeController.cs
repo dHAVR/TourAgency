@@ -5,6 +5,7 @@ using TourAgency.Data;
 using TourAgency.Models;
 using System.Linq;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Localization;
 
 namespace TourAgency.Controllers
 {
@@ -17,6 +18,20 @@ namespace TourAgency.Controllers
         {
             _logger = logger;
             _context = context;
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            if (!string.IsNullOrEmpty(culture))
+            {
+                Response.Cookies.Append(
+                    CookieRequestCultureProvider.DefaultCookieName,
+                    CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                    new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+                );
+            }
+            return LocalRedirect(returnUrl ?? Url.Content("~/"));
         }
 
         public IActionResult Index()
@@ -32,13 +47,19 @@ namespace TourAgency.Controllers
 
         public IActionResult Details(int id)
         {
-            var tour = _context.Tours.Find(id);
+            var tour = _context.Tours
+                .Include(t => t.Reviews.Where(r => r.IsVerified)) 
+                .ThenInclude(r => r.User) 
+                .FirstOrDefault(t => t.Id == id);
+
             if (tour == null)
             {
                 return NotFound();
             }
+
             return View(tour);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]

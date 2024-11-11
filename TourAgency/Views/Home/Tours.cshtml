@@ -1,46 +1,46 @@
 ﻿@model IEnumerable<TourAgency.Models.Tour>
 
+@inject IViewLocalizer Localizer
+
 <link href="/css/tours.css" rel="stylesheet" />
 
 <div class="container tour-cards">
-    <h2>Available Tours</h2>
-
+    <h2>@Localizer["AvailableTours"]</h2>
 
     <form asp-action="Tours" method="get" class="mb-4 p-3 rounded shadow-sm" style="background-color: #f8f9fa;">
         <div class="form-group p-3">
-            <label for="searchQuery" class="font-weight-bold">Search Tours</label>
-            <input type="text" id="searchQuery" name="searchQuery" class="form-control" placeholder="Enter tour name or description" />
+            <label for="searchQuery" class="font-weight-bold">@Localizer["SearchTours"]</label>
+            <input type="text" id="searchQuery" name="searchQuery" class="form-control" placeholder="@Localizer["EnterTourNameOrDescription"]" />
         </div>
 
-        <button type="button" class="btn btn-secondary w-100" onclick="toggleFilters()">Filters</button>
-
+        <button type="button" class="btn btn-secondary w-100" onclick="toggleFilters()">@Localizer["Filters"]</button>
 
         <div id="price-filters" class="form-row mt-3" style="display: none;">
             <div class="col-md-6 mb-3">
-                <label for="minPrice" class="font-weight-bold">Min Price</label>
-                <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="Enter minimum price" step="0.01" />
+                <label for="minPrice" class="font-weight-bold">@Localizer["MinPrice"]</label>
+                <input type="number" id="minPrice" name="minPrice" class="form-control" placeholder="@Localizer["EnterMinimumPrice"]" step="0.01" />
             </div>
             <div class="col-md-6 mb-3">
-                <label for="maxPrice" class="font-weight-bold">Max Price</label>
-                <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="Enter maximum price" step="0.01" />
+                <label for="maxPrice" class="font-weight-bold">@Localizer["MaxPrice"]</label>
+                <input type="number" id="maxPrice" name="maxPrice" class="form-control" placeholder="@Localizer["EnterMaximumPrice"]" step="0.01" />
             </div>
-          
+
             <div class="col-12 mt-2">
                 <div class="form-check">
                     <input type="checkbox" id="onlyAvailable" name="onlyAvailable" class="form-check-input" />
-                    <label for="onlyAvailable" class="form-check-label font-weight-bold">Show only tours with available slots</label>
+                    <label for="onlyAvailable" class="form-check-label font-weight-bold">@Localizer["ShowOnlyAvailableSlots"]</label>
                 </div>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary mt-4 w-100">Search</button>
+        <button type="submit" class="btn btn-primary mt-4 w-100">@Localizer["Search"]</button>
     </form>
 
     <div class="row">
         @if (!Model.Any())
         {
             <div class="col-12">
-                <p class="text-center text-muted">No tours available.</p>
+                <p class="text-center text-muted">@Localizer["NoToursAvailable"]</p>
             </div>
         }
         else
@@ -55,11 +55,11 @@
                                 <img src="data:image;base64,@Convert.ToBase64String(tour.Image)" class="card-img-top" alt="@tour.Name">
                                 <div class="card-body">
                                     <h5 class="card-title">
-                                        Visit @tour.Name <i class="fas fa-arrow-right"></i>
+                                        @Localizer["Visit"] @tour.Name <i class="fas fa-arrow-right"></i>
                                     </h5>
                                     <p class="card-text">@tour.Description</p>
-                                    <p class="price">@tour.Price.ToString("C")</p>
-                                    <p class="text-success">Available slots: @tour.AvailableSlots</p>
+                                    <p class="price">@tour.Price.ToString() $</p>
+                                    <p class="text-success">@Localizer["AvailableSlots"]: @tour.AvailableSlots</p>
                                 </div>
                             </div>
                         </a>
