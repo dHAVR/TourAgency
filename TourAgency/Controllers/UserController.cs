@@ -1,9 +1,10 @@
 ﻿namespace TourAgency.Controllers
 {
     using global::TourAgency.Models;
+    using global::TourAgency.ViewModels;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-  
+
 
     namespace TourAgency.Controllers
     {
@@ -32,7 +33,7 @@
 
             // CREATE: Додати нового користувача
             [HttpPost]
-            public async Task<IActionResult> Create(ApplicationUser model)
+            public async Task<IActionResult> Create(ApplicationUser model, string password)
             {
                 if (ModelState.IsValid)
                 {
@@ -45,11 +46,10 @@
                         DateOfBirth = model.DateOfBirth
                     };
 
-                    var result = await _userManager.CreateAsync(user, "DefaultPassword123!");
-
+                    var result = await _userManager.CreateAsync(user, password);
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Index", "Home");
                     }
 
                     foreach (var error in result.Errors)
@@ -57,9 +57,10 @@
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                 }
-
                 return View(model);
             }
+
+
 
             // UPDATE: Форма для редагування користувача
             [HttpGet]
@@ -108,8 +109,37 @@
                 return View(model);
             }
 
-            // DELETE: Видалити користувача
             [HttpPost]
+            public async Task<IActionResult> CreateUser(ApplicationUser model, string password)
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = new ApplicationUser
+                    {
+                        UserName = model.Email,
+                        Email = model.Email,
+                        Name = model.Name,
+                        Surname = model.Surname,
+                        DateOfBirth = model.DateOfBirth
+                    };
+
+                    var result = await _userManager.CreateAsync(user, password);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                }
+                return View(model);
+            }
+        
+
+        // DELETE: Видалити користувача
+        [HttpPost]
             public async Task<IActionResult> Delete(string id)
             {
                 var user = await _userManager.FindByIdAsync(id);
