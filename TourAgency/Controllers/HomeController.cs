@@ -4,6 +4,7 @@ using System.Diagnostics;
 using TourAgency.Data;
 using TourAgency.Models;
 using System.Linq;
+using System.Security.Claims;
 
 namespace TourAgency.Controllers
 {
@@ -38,6 +39,61 @@ namespace TourAgency.Controllers
             }
             return View(tour);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmBooking(int tourId, string firstName, string lastName, string phoneNumber, int numberOfSpots)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity" });
+            }
+
+            var tour = _context.Tours.Find(tourId);
+            if (tour == null || tour.AvailableSlots < numberOfSpots)
+            {
+                return NotFound(); 
+            }
+
+            var booking = new Booking
+            {
+                TourId = tourId,
+                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                BookingDate = DateTime.Now,
+                FirstName = firstName,
+                LastName = lastName,
+                PhoneNumber = phoneNumber,
+                NumberOfSpots = numberOfSpots,
+                IsConfirmed = false 
+            };
+
+            tour.AvailableSlots -= numberOfSpots; 
+            _context.Bookings.Add(booking);
+            _context.SaveChanges();
+
+            return RedirectToAction("BookingConfirmation");
+        }
+
+
+
+
+        public IActionResult BookingForm(int tourId)
+        {
+            var tour = _context.Tours.Find(tourId);
+            if (tour == null)
+            {
+                return NotFound(); 
+            }
+
+            return View(tour); 
+        }
+
+
+        public IActionResult BookingConfirmation()
+        {
+            return View();
+        }
+
 
         public IActionResult Tours(string searchQuery, string countryFilter, decimal? minPrice, decimal? maxPrice, bool onlyAvailable = false)
         {

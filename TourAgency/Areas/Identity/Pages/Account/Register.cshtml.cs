@@ -93,14 +93,15 @@ namespace TourAgency.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+           
+            returnUrl ??= Url.Page("/Index", new { area = "" }); 
+
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                // Сохраняем дополнительные поля (Name, Surname, DateOfBirth)
                 user.Name = Input.Name;
                 user.Surname = Input.Surname;
                 user.DateOfBirth = Input.DateOfBirth;
@@ -132,7 +133,7 @@ namespace TourAgency.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return LocalRedirect(returnUrl); 
                     }
                 }
 
@@ -142,6 +143,7 @@ namespace TourAgency.Areas.Identity.Pages.Account
                 }
             }
 
+  
             return Page();
         }
 

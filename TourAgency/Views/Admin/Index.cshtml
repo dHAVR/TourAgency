@@ -1,27 +1,25 @@
-﻿
+﻿@model IEnumerable<TourAgency.Models.Booking>
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
-
 <div class="container">
-
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#users">Користувачі</a>
+            <a class="nav-link active" data-toggle="tab" href="#users" role="tab">Користувачі</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#tours">Тури</a>
+            <a class="nav-link" data-toggle="tab" href="#tours" role="tab">Тури</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#bookings" role="tab">Бронювання</a>
         </li>
     </ul>
 
     <div class="tab-content mt-4">
-  
-        <div id="users" class="tab-pane fade show active">
+        <!-- Users Section -->
+        <div id="users" class="tab-pane fade show active" role="tabpanel">
             <h2>Користувачі</h2>
             <div class="d-grid gap-2">
                 <a href="/User/Index" class="btn btn-primary">Переглянути всіх користувачів</a>
@@ -29,13 +27,91 @@
             </div>
         </div>
 
-
-        <div id="tours" class="tab-pane fade">
+        <!-- Tours Section -->
+        <div id="tours" class="tab-pane fade" role="tabpanel">
             <h2>Тури</h2>
             <div class="d-grid gap-2">
                 <a href="/Tours/Index" class="btn btn-primary">Переглянути всі тури</a>
                 <a href="/Tours/Create" class="btn btn-success">Додати новий тур</a>
             </div>
         </div>
+
+        <!-- Bookings Section -->
+        <div id="bookings" class="tab-pane fade" role="tabpanel">
+            <h2>Бронювання</h2>
+            <div class="d-grid gap-2 mb-3">
+                <a href="/Bookings/Index" class="btn btn-primary">Переглянути всі бронювання</a>
+                <a href="/Bookings/Create" class="btn btn-success">Додати нове бронювання</a>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tour</th>
+                        <th>Booking Date</th>
+                        <th>Number of Spots</th>
+                        <th>Confirmed</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model)
+                    {
+                        <tr id="booking-row-@booking.Id">
+                            <td>@booking.Tour.Name</td>
+                            <td>@booking.BookingDate.ToShortDateString()</td>
+                            <td>@booking.NumberOfSpots</td>
+                            <td id="confirm-status-@booking.Id">@((booking.IsConfirmed) ? "Yes" : "No")</td>
+                            <td>
+                                @if (!booking.IsConfirmed)
+                                {
+                                    <button class="btn btn-warning btn-sm confirm-booking-btn" data-id="@booking.Id">Підтвердити бронювання</button>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-success">Підтверджено</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+  
+    <div class="mt-4 text-right">
+        <div class="mt-4 text-right">
+            <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                <button type="submit" class="btn btn-danger">Log Out</button>
+            </form>
+        </div>
+
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('.confirm-booking-btn').click(function() {
+            var bookingId = $(this).data('id');
+
+            $.ajax({
+                url: '/Bookings/ConfirmBooking',
+                type: 'POST',
+                data: { id: bookingId },
+                success: function(response) {
+                    if (response.success) {
+                        $('#confirm-status-' + bookingId).text('Yes');
+                        $('#booking-row-' + bookingId + ' .confirm-booking-btn')
+                            .replaceWith('<span class="badge badge-success">Підтверджено</span>');
+                    } else {
+                        alert('Failed to confirm booking: ' + response.message);
+                    }
+                },
+                error: function() {
+                    alert('Error confirming booking.');
+                }
+            });
+        });
+    });
+</script>

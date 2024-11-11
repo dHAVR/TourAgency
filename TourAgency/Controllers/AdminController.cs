@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TourAgency.Data;
 using TourAgency.Models;
 
@@ -15,12 +16,13 @@ namespace TourAgency.Controllers
             _dbContext = dbContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var bookings = await _dbContext.Bookings.Include(b => b.Tour).ToListAsync();
+            return View(bookings);
         }
 
-   
+
         [HttpPost]
         public async Task<IActionResult> AddTour(Tour tour, IFormFile imageFile)
         {
